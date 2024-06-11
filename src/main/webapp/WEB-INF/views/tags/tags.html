@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>All tags</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>CreatedAt</th>
+        <th>UpdatedAt</th>
+        <th>Color</th>
+        <th>Type</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="tag : ${tags}">
+        <td th:text="${tag.id()}"></td>
+        <td th:text="${tag.name()}"></td>
+        <td th:text="${tag.createdAt()}"></td>
+        <td th:text="${tag.updatedAt()}"></td>
+        <td th:style="'background-color:' + ${tag.color()}">Color</td>
+        <td th:text="${tag.type()}"></td>
+        <td>
+            <form th:method="GET" th:action="@{/tags/{id}/edit(id=${tag.id()})}">
+                <input type="submit" value="Edit">
+            </form>
+        </td>
+        <td>
+            <form th:method="DELETE" th:action="@{/tags/{id}(id=${tag.id()})}">
+                <input type="submit" value="Delete">
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<form th:method="POST" th:action="@{/tags}" th:object="${newTag}">
+
+    <label for="name">Enter name of tag: </label>
+    <input type="text" th:field="*{name}" id="name" required/>
+
+    <label for="color">Select color: </label>
+    <input type="color" th:field="*{color}" id="color" required/>
+
+    <label for="type">Select tag type: </label>
+    <select th:field="*{type}" id="type" required>
+        <option th:each="curType : ${types}" th:value="${curType.getName()}" th:text="${curType.getName()}"></option>
+    </select>
+    <br>
+
+    <input type="submit" value="Add tag"/>
+</form>
+<a href="tasks/my">To main page</a>
+</body>
+</html>

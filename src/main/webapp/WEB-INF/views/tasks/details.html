@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Task Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            overflow-x: auto;
+        }
+        h1 {
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            table-layout: fixed;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+            word-wrap: break-word;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #495057;
+        }
+        input[type="text"], select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .content-column {
+            width: 40%;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Task Details</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Description</th>
+            <th>Executor</th>
+            <th>Tag</th>
+            <th>Created</th>
+            <th>Updated</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${task.id()}"></td>
+            <td th:text="${task.description()}"></td>
+            <td th:text="${task.user.userName()} + ' ' + ${task.user.firstname()} + ' ' + ${task.user.lastname()}"></td>
+            <td th:text="${task.tag.name()}" th:style="'background-color:' + ${task.tag.color()}"></td>
+            <td th:text="${task.createdAt()}"></td>
+            <td th:text="${task.updatedAt()}"></td>
+        </tr>
+        <tr>
+            <th colspan="6">Content</th>
+        </tr>
+        <tr>
+            <td colspan="6" th:text="${task.content()}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <form th:method="POST" th:action="@{/comments}" th:object="${comment}">
+        <label for="subject">Enter title:</label>
+        <input type="text" th:field="*{subject}" id="subject" required/>
+        <label for="content">Enter content:</label>
+        <input type="text" th:field="*{content}" id="content" required/>
+        <input type="text" th:field="*{userId}" id="userId" hidden="hidden"/>
+        <input type="text" th:field="*{taskId}" id="taskId" hidden="hidden"/>
+        <input type="submit" value="Add Comment"/>
+    </form>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th class="content-column">Content</th>
+            <th>Created</th>
+            <th>Author</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="comment : ${comments}">
+            <td th:text="${comment.id()}"></td>
+            <td th:text="${comment.subject()}"></td>
+            <td th:text="${comment.content()}"></td>
+            <td th:text="${comment.createdAt()}"></td>
+            <td th:text="${comment.user.firstname()} + ' ' + ${comment.user.lastname()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

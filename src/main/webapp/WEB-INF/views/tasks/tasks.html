@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All tasks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 90%;
+        }
+        h1 {
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            color: #495057;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        a {
+            display: inline-block;
+            text-align: center;
+            margin: 10px 0;
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #ddd;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 th:text="${name}">All tasks</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Description</th>
+            <th>CreatedAt</th>
+            <th>UpdatedAt</th>
+            <th>Author</th>
+            <th>Tag</th>
+            <th>Status</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task : ${tasks}">
+            <td th:text="${task.id()}"></td>
+            <td><a th:href="'/tasks/' + ${task.id()}" th:text="${task.description()}"></a></td>
+            <td th:text="${task.createdAt()}"></td>
+            <td th:text="${task.updatedAt()}"></td>
+            <td th:text="${task.createdBy().userName()}"></td>
+            <td th:text="${task.tag().name()}"></td>
+            <td th:text="${task.taskStatus()}"></td>
+            <td>
+                <form th:method="GET" th:action="@{/tasks/{id}/edit(id=${task.id()})}">
+                    <input type="submit" value="Edit">
+                </form>
+            </td>
+            <td>
+                <form th:method="DELETE" th:action="@{/tasks/{id}(id=${task.id()})}">
+                    <input type="submit" value="Delete">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <hr/>
+    <a href="/tasks/new">Create new task</a>
+    <hr/>
+    <a th:href="${addr}" th:text="${addr_name}"></a>
+    <hr/>
+    <a href="/tags">Edit tags</a>
+</div>
+</body>
+</html>

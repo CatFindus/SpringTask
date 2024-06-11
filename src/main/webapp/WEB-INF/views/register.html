@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #495057;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="password"],
+        select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Register new user</h1>
+    <form th:method="POST" th:action="@{/register}" th:object="${newUser}">
+        <label for="userName">Enter username: </label>
+        <input type="text" th:field="*{userName}" id="userName" required/>
+        <div style="color: red" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">name error</div>
+        <br>
+        <label for="firstname">Enter firstname: </label>
+        <input type="text" th:field="*{firstname}" id="firstname" required/>
+        <div style="color: red" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}">name error</div>
+        <br>
+        <label for="lastname">Enter lastname: </label>
+        <input type="text" th:field="*{lastname}" id="lastname" required/>
+        <div style="color: red" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">name error</div>
+        <br>
+        <label for="birthDate">Enter birth date: </label>
+        <input type="date" th:field="*{birthDate}" id="birthDate" required/>
+        <br>
+        <label for="password">Enter password: </label>
+        <input type="password" th:field="*{password}" id="password" required/>
+        <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">name error</div>
+        <br>
+        <label for="company">Select company: </label>
+        <select th:field="*{companyId}" id="company" required>
+            <option th:each="company : ${companies}" th:value="${company.id()}" th:text="${company.name()}"></option>
+        </select>
+        <br>
+        <input type="submit" value="Register"/>
+    </form>
+    <br>
+    <a href="/">Already registered</a>
+</div>
+</body>
+</html>
